@@ -1,0 +1,19 @@
+
+###> idea ###
+.idea
+###< idea ###
+
+###> symfony/framework-bundle ###
+backend/.env
+backend/public/bundles/
+backend/var/
+backend/vendor/
+###< symfony/framework-bundle ###
+
+###> npm ###
+frontend/node_modules
+###< npm ###
+
+###> webpack ###
+frontend/public
+###< webpack ###

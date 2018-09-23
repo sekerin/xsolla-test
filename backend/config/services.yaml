@@ -34,3 +34,8 @@ services:
     class: App\EventListener\CorsListener
     tags:
     - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+  files.exception.listener:
+    class: App\EventListener\ExceptionToJsonListener
+    tags:
+    - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }

@@ -18,4 +18,13 @@ describe('Test filesListReducer reducer', () => {
     const state = FilesListReducer({}, { type: 'FILES_LIST_ERROR', errors });
     expect(state).toEqual({ loading: false, errors });
   });
+
+  it('filesListReducer FILES_LIST_DELETE set loading to false, errors to null and remove one item', () => {
+    const itemsAfterDelete = [{ name: 'file2' }];
+    const state = FilesListReducer({ items: [{ name: 'file1' }, { name: 'file2' }] }, {
+      type: 'FILES_LIST_DELETE',
+      item: { name: 'file1' }
+    });
+    expect(state).toEqual({ errors: null, loading: false, items: itemsAfterDelete });
+  });
 });

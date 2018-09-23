@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Table component Empty Table 1`] = `
+<Table
+  bordered={true}
+  bsClass="table"
+  condensed={true}
+  hover={true}
+  responsive={true}
+  striped={true}
+>
+  <thead>
+    <tr>
+      <td>
+        Name
+      </td>
+      <td>
+        Actions
+      </td>
+    </tr>
+  </thead>
+  <tbody />
+</Table>
+`;
+
+exports[`Test Table component Table with data 1`] = `
+<Table
+  bordered={true}
+  bsClass="table"
+  condensed={true}
+  hover={true}
+  responsive={true}
+  striped={true}
+>
+  <thead>
+    <tr>
+      <td>
+        Name
+      </td>
+      <td>
+        Actions
+      </td>
+    </tr>
+  </thead>
+  <tbody>
+    <TableItem
+      key="file"
+      name="file"
+      onDelete={Object {}}
+    />
+  </tbody>
+</Table>
+`;

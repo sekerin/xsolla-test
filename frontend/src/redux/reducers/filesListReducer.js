@@ -24,6 +24,7 @@ export default function (state = initialState, action) {
     case FILES_LIST_DELETE:
       return Object.assign({}, state, {
         items: state.items.filter((x) => x.name !== action.item.name),
+        errors: null,
         loading: false
       });
     case FILES_LIST_ERROR:

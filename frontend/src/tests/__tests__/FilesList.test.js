@@ -12,4 +12,9 @@ describe('Test FilesList component', () => {
     const wrapper = shallow(<FileList store={store}/>);
     expect(shallowToJson(wrapper)).toMatchSnapshot();
   });
+  it('FileList with data', () => {
+    const store = configureStore({ filesList: { items: [{ name: 'fileName' }], modal: false } });
+    const wrapper = shallow(<FileList store={store}/>);
+    expect(shallowToJson(wrapper)).toMatchSnapshot();
+  });
 });

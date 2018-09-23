@@ -61,10 +61,24 @@ class SimpleFileSystemRepository implements FileRepositoryInterface
      *
      * @param string $id
      * @return FileEntityInterface
+     *
+     * @throws FileNotFound
      */
     public function getFileByName(string $id): FileEntityInterface
     {
-        // TODO: Implement getFileByName() method.
+        $finder = Finder::create();
+
+        $files = $finder->files()->name($id)->in($this->dataDir)->getIterator();
+        $files->rewind();
+
+        if (!$files->valid()) {
+            throw new FileNotFound(sprintf('File %s not found', $id));
+        }
+
+        $entity = $this->fileEntity;
+        $entity->setFile($files->current());
+
+        return $entity;
     }
 
     /**

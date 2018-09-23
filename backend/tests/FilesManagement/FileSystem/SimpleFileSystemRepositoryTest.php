@@ -143,4 +143,14 @@ class SimpleFileSystemRepositoryTest extends TestCase
         $this->expectException(FileAlreadyExists::class);
         $this->repository->replace('file3', $fileEntity->reveal());
     }
+
+    /**
+     * @throws FileNotFound
+     */
+    public function testGetFileByName()
+    {
+        $this->expectException(FileNotFound::class);
+
+        $this->repository->getFileByName('fileNotFound');
+    }
 }

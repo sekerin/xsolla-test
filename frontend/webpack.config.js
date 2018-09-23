@@ -21,7 +21,7 @@ const plugins = [
     dry: false
   }),
   new webpack.DefinePlugin({
-    BACKEND_URL: JSON.stringify(process.env.BACKEND_HOST)
+    BACKEND_URL: JSON.stringify(`${process.env.BACKEND_HOST}/files`)
   })
 ];
 
@@ -80,6 +80,6 @@ module.exports = {
     hot: false,
     host: 'sf-assets.local',
     port: 80,
-    headers: { 'Access-Control-Allow-Origin': '*' },
+    headers: { 'Access-Control-Allow-Origin': '*' }
   }
 };

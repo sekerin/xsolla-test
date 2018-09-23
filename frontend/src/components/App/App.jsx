@@ -1,9 +1,11 @@
 import React, { Component }    from 'react';
 import PropTypes               from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Route, Link, Switch } from 'react-router-dom';
 
 import Grid   from 'react-bootstrap/lib/Grid';
 import Navbar from 'react-bootstrap/lib/Navbar';
+
+import FilesList from '../FilesList';
 
 const propTypes = {
   children: PropTypes.node
@@ -18,10 +20,13 @@ class App extends Component {
             <Navbar.Brand>
               <Link to='/'>File Manager</Link>
             </Navbar.Brand>
+            <Navbar.Toggle/>
           </Navbar.Header>
         </Navbar>
         <Grid>
-          Hello, world!
+          <Switch>
+            <Route exact path='/' component={FilesList}/>
+          </Switch>
         </Grid>
       </div>
     );

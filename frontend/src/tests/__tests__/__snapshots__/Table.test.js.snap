@@ -46,7 +46,7 @@ exports[`Test Table component Table with data 1`] = `
     <TableItem
       key="file"
       name="file"
-      onDelete={Object {}}
+      onDelete={[MockFunction]}
     />
   </tbody>
 </Table>

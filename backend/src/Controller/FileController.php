@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\FilesManagement\FileRepositoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,10 +21,17 @@ class FileController extends AbstractController
      * Get list of files metadata
      *
      * @Route("/", name="files_list", methods="GET")
+     *
+     * @param FileRepositoryInterface $repository
+     * @return Response
      */
-    public function index(): Response
+    public function index(FileRepositoryInterface $repository): Response
     {
-        return new Response('index');
+        $files = new \LimitIterator($repository->getFilesList(), 0, 10000);
+
+        return $this->json([
+            'items' => $files
+        ]);
     }
 
     /**

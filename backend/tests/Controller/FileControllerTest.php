@@ -4,6 +4,8 @@ namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 class FileControllerTest extends WebTestCase
 {
     public function testIndex()
@@ -13,6 +15,9 @@ class FileControllerTest extends WebTestCase
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode(),
             'GET / must be accessible');
+
+        $this->assertInstanceOf(JsonResponse::class, $client->getResponse(),
+            'Index action must return json');
     }
 
     public function testDownload()

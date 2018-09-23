@@ -11,6 +11,7 @@ use App\FilesManagement\FileRepositoryInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
+use Symfony\Component\Finder\Finder;
 
 class SimpleFileSystemRepository implements FileRepositoryInterface
 {
@@ -42,14 +43,13 @@ class SimpleFileSystemRepository implements FileRepositoryInterface
 
 
     /**
-     * Get files and return ArrayIterator.
-     * In iterator
+     * Find files in directory and return iterator
      *
      * @return IteratorIterator
      */
     public function getFilesList(): IteratorIterator
     {
-
+        return new \IteratorIterator($this->getFilesTraversable());
     }
 
     /**
@@ -105,5 +105,22 @@ class SimpleFileSystemRepository implements FileRepositoryInterface
     public function delete(string $id): bool
     {
         // TODO: Implement delete() method.
+    }
+
+    /**
+     * Get files and return Traversable.
+     * In iterator
+     *
+     * @return \Traversable
+     */
+    protected function getFilesTraversable(): \Traversable
+    {
+        $finder = Finder::create();
+
+        foreach ($finder->files()->sortByName()->in($this->dataDir) as $file) {
+            $entity = $this->fileEntity;
+            $entity->setFile($file);
+            yield $entity;
+        }
     }
 }

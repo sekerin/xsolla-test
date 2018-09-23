@@ -35,6 +35,9 @@
     "facebook/webdriver": {
         "version": "1.6.0"
     },
+    "mikey179/vfsstream": {
+        "version": "v1.6.5"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -148,6 +151,9 @@
             "version": "4.0",
             "ref": "5f514d9d3b8a8aac3d62ae6a86b18b90ed0c7826"
         }
+    },
+    "symfony/serializer": {
+        "version": "v4.1.4"
     },
     "symfony/test-pack": {
         "version": "v1.0.3"

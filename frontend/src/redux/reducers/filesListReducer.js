@@ -1,6 +1,7 @@
 import {
   FILES_LIST_PROCESS_START,
   FILES_LIST_PROCESS_FINISH,
+  FILES_LIST_DELETE,
   FILES_LIST_ERROR
 } from '../actions/filesListAction';
 
@@ -20,6 +21,11 @@ export default function (state = initialState, action) {
         loading: false,
         items: action.items
       };
+    case FILES_LIST_DELETE:
+      return Object.assign({}, state, {
+        items: state.items.filter((x) => x.name !== action.item.name),
+        loading: false
+      });
     case FILES_LIST_ERROR:
       return Object.assign({}, state, { errors: action.errors, loading: false });
     default:

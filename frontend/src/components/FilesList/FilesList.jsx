@@ -3,7 +3,7 @@ import PropTypes                             from 'prop-types';
 import { connect }                           from 'react-redux';
 import { PageHeader, Grid, Row, Col, Alert } from 'react-bootstrap';
 import ButtonLoader                          from 'react-bootstrap-button-loader';
-import { listRequest }                       from '../../redux/actions/filesListAction';
+import { listRequest, remove }               from '../../redux/actions/filesListAction';
 import Table                                 from './Table';
 
 const propsTypes = {
@@ -18,6 +18,8 @@ class FileList extends Component {
     super();
 
     this.handleRefresh = this.handleRefresh.bind(this);
+
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentDidMount() {
@@ -26,6 +28,10 @@ class FileList extends Component {
 
   handleRefresh() {
     this.props.dispatch(listRequest());
+  }
+
+  handleDelete(id) {
+    this.props.dispatch(remove(id));
   }
 
   render() {
@@ -47,6 +53,7 @@ class FileList extends Component {
             <Col xs={8} md={8}>
               <Table
                 data={this.props.items}
+                onDelete={this.handleDelete}
               />
             </Col>
           </Row>

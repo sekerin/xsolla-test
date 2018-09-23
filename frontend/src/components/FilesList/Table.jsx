@@ -4,7 +4,8 @@ import { Table }            from 'react-bootstrap';
 import TableItem            from './TableItem';
 
 const propsTypes = {
-  data: PropTypes.any
+  data: PropTypes.any,
+  onDelete: PropTypes.func.isRequired
 };
 
 class TableModule extends Component {
@@ -22,6 +23,7 @@ class TableModule extends Component {
         <TableItem
           key={item.name}
           name={item.name}
+          onDelete={this.props.onDelete}
         />
       );
     });

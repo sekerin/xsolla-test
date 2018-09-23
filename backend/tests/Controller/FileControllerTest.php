@@ -48,7 +48,7 @@ class FileControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request('DELETE', '/files/filename');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(),
-            'DELETE /filename must be accessible');
+        $this->assertEquals(500, $client->getResponse()->getStatusCode(),
+            'DELETE /filename must fail');
     }
 }

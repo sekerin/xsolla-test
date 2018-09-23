@@ -85,13 +85,18 @@ class FileController extends AbstractController
      *     )
      *
      * @param Request $request
+     * @param FileRepositoryInterface $repository
      * @return Response
      */
-    public function delete(Request $request): Response
+    public function delete(Request $request, FileRepositoryInterface $repository): Response
     {
         $fileName = $request->get('file_name') ?? '';
 
-        return new Response('delete' . $fileName);
+        if ($repository->delete($fileName)) {
+            return $this->json(['item' => ['name' => $fileName]]);
+        }
+
+        throw new \RuntimeException();
     }
 
     /**

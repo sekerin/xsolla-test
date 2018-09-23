@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\FilesManagement\FileSystem;
 
+use App\Exception\FileException\FileNotFound;
 use IteratorIterator;
 
 use App\FilesManagement\FileEntityInterface;
@@ -101,10 +102,18 @@ class SimpleFileSystemRepository implements FileRepositoryInterface
      *
      * @param string $id
      * @return bool
+     *
+     * @throws FileNotFound
      */
     public function delete(string $id): bool
     {
-        // TODO: Implement delete() method.
+        $path = "{$this->dataDir}/{$id}";
+
+        if (!$this->fileExists($path)) {
+            throw new FileNotFound(sprintf('File %s not found', $id));
+        }
+
+        return $this->unlink($path);
     }
 
     /**
@@ -122,5 +131,27 @@ class SimpleFileSystemRepository implements FileRepositoryInterface
             $entity->setFile($file);
             yield $entity;
         }
+    }
+
+    /**
+     * Check is file exists
+     *
+     * @param string $path
+     * @return bool
+     */
+    protected function fileExists(string $path): bool
+    {
+        return file_exists($path);
+    }
+
+    /**
+     * unlink file by absolute path
+     *
+     * @param string $path
+     * @return bool
+     */
+    protected function unlink(string $path)
+    {
+        return unlink($path);
     }
 }

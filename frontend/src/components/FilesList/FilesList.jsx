@@ -1,16 +1,16 @@
-import React, { Component }           from 'react';
-import PropTypes                      from 'prop-types';
-import { connect }                    from 'react-redux';
-import { PageHeader, Grid, Row, Col } from 'react-bootstrap';
-import ButtonLoader                   from 'react-bootstrap-button-loader';
-import { listRequest }                from '../../redux/actions/filesListAction';
-import Table                          from './Table';
+import React, { Component }                  from 'react';
+import PropTypes                             from 'prop-types';
+import { connect }                           from 'react-redux';
+import { PageHeader, Grid, Row, Col, Alert } from 'react-bootstrap';
+import ButtonLoader                          from 'react-bootstrap-button-loader';
+import { listRequest }                       from '../../redux/actions/filesListAction';
+import Table                                 from './Table';
 
 const propsTypes = {
   dispatch: PropTypes.func.isRequired,
   items: PropTypes.any,
   loading: PropTypes.bool,
-  error: PropTypes.string
+  errors: PropTypes.array
 };
 
 class FileList extends Component {
@@ -32,6 +32,11 @@ class FileList extends Component {
     return (
       <div>
         <PageHeader>Files list</PageHeader>
+        {this.props.errors && (
+          <Alert bsStyle='danger'>
+            {this.props.errors}
+          </Alert>
+        )}
         <Grid>
           <Row className='show-grid'>
             <Col xs={8} md={8}>
@@ -46,7 +51,6 @@ class FileList extends Component {
             </Col>
           </Row>
         </Grid>
-        {this.props.error && (<div>{this.props.error}</div>)}
       </div>
     );
   }
@@ -55,9 +59,9 @@ class FileList extends Component {
 FileList.propTypes = propsTypes;
 
 function mapStateToProps(state) {
-  const { items, loading, error } = state.filesList;
+  const { items, loading, errors } = state.filesList;
 
-  return { items, loading, error };
+  return { items, loading, errors };
 }
 
 export default connect(mapStateToProps)(FileList);

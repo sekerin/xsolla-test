@@ -26,10 +26,13 @@ export function listRequest() {
       credentials: 'include'
     })
       .then((response) => {
-        return response.json();
-      })
-      .then((response) => {
-        dispatch(filesListProcessFinish(response.items));
+        response.json().then((item) => {
+          if (response.status === 200) {
+            dispatch(filesListProcessFinish(item.items));
+          } else {
+            dispatch(filesListError(item.errors));
+          }
+        }).catch((error) => dispatch(filesListError(error)));
       })
       .catch((error) => {
         dispatch(filesListError(JSON.stringify(error)));

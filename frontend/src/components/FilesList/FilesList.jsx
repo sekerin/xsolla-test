@@ -86,7 +86,7 @@ class FileList extends Component {
         <Grid>
           <Row className='show-grid'>
             <Col xs={8} md={8}>
-              <ButtonLoader loading={this.props.loading} onClick={this.handleRefresh}>GetTable</ButtonLoader>
+              <ButtonLoader loading={this.props.loading} onClick={this.handleRefresh}>Get files</ButtonLoader>
               <Button bsStyle='success' onClick={this.handleShowModal}>Add</Button>
             </Col>
           </Row>

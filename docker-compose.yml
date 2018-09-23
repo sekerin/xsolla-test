@@ -1,0 +1,22 @@
+version: "3"
+services:
+  nginx:
+    image: nginx:1.14-alpine
+    volumes:
+    - ${NGINX_LOGS_PATH}:/var/logs
+    - ./docker/nginx/backend.conf:/etc/nginx/conf.d/backend.conf
+    - ./backend:/var/www/html
+    links:
+    - php
+    environment:
+    - VIRTUAL_HOST=${BACKEND_HOST}
+  php:
+    build: ./docker/php
+    volumes:
+    - ./backend:/var/www/html
+    environment:
+    - XDEBUD_REMOTE_HOST=${XDEBUD_REMOTE_HOST}
+networks:
+  default:
+    external:
+      name: ${NETWORK}

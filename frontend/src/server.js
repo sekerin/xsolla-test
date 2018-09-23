@@ -33,7 +33,7 @@ function renderHTML(componentHTML, initialState) {
       <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Hello</title>
+          <title>Xsolla Test</title>
           <script type="application/javascript">
             window.REDUX_INITIAL_STATE = ${JSON.stringify(initialState)};
           </script>

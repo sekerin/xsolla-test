@@ -27,4 +27,23 @@ describe('Test filesListReducer reducer', () => {
     });
     expect(state).toEqual({ errors: null, loading: false, items: itemsAfterDelete });
   });
+
+  it('filesListReducer FILES_LIST_ADD set loading to false and add one item', () => {
+    const itemsAfterAdd = [{ name: 'file1' }, { name: 'file2' }, { name: 'file3' }];
+    const state = FilesListReducer({ items: [{ name: 'file1' }, { name: 'file2' }] }, {
+      type: 'FILES_LIST_ADD',
+      item: { name: 'file3' }
+    });
+    expect(state).toEqual({ loading: false, items: itemsAfterAdd });
+  });
+
+  it('filesListReducer FILES_LIST_UPDATE set loading to false and replace one item', () => {
+    const itemsAfterUpdate = [{ name: 'file1' }, { name: 'file3' }];
+    const state = FilesListReducer({ items: [{ name: 'file1' }, { name: 'file2' }] }, {
+      type: 'FILES_LIST_UPDATE',
+      name: 'file2',
+      item: { name: 'file3' }
+    });
+    expect(state).toEqual({ loading: false, items: itemsAfterUpdate });
+  });
 });

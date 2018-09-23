@@ -5,6 +5,7 @@ import TableItem            from './TableItem';
 
 const propsTypes = {
   data: PropTypes.any,
+  onEditItem: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired
 };
 
@@ -23,6 +24,7 @@ class TableModule extends Component {
         <TableItem
           key={item.name}
           name={item.name}
+          onEditItem={this.props.onEditItem}
           onDelete={this.props.onDelete}
         />
       );

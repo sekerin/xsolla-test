@@ -3,6 +3,10 @@
 .idea
 ###< idea ###
 
+###> docker/env ###
+.env
+###< docker/env ###
+
 ###> symfony/framework-bundle ###
 backend/.env
 backend/public/bundles/

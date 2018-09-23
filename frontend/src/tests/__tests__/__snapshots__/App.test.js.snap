@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+<StaticRouter
+  basename=""
+  context={Object {}}
+  location="/"
+>
+  <Router
+    history={
+      Object {
+        "action": "POP",
+        "block": [Function],
+        "createHref": [Function],
+        "go": [Function],
+        "goBack": [Function],
+        "goForward": [Function],
+        "listen": [Function],
+        "location": Object {
+          "hash": "",
+          "pathname": "/",
+          "search": "",
+          "state": undefined,
+        },
+        "push": [Function],
+        "replace": [Function],
+      }
+    }
+  >
+    <App>
+      <div>
+        <Uncontrolled(Navbar)
+          bsStyle="default"
+        >
+          <Navbar
+            bsClass="navbar"
+            bsStyle="default"
+            collapseOnSelect={false}
+            componentClass="nav"
+            fixedBottom={false}
+            fixedTop={false}
+            fluid={false}
+            inverse={false}
+            onToggle={[Function]}
+            staticTop={false}
+          >
+            <nav
+              className="navbar navbar-default"
+            >
+              <Grid
+                bsClass="container"
+                componentClass="div"
+                fluid={false}
+              >
+                <div
+                  className="container"
+                >
+                  <NavbarHeader>
+                    <div
+                      className="navbar-header"
+                    >
+                      <NavbarBrand>
+                        <Link
+                          className="navbar-brand"
+                          replace={false}
+                          to="/"
+                        >
+                          <a
+                            className="navbar-brand"
+                            href="/"
+                            onClick={[Function]}
+                          >
+                            File Manager
+                          </a>
+                        </Link>
+                      </NavbarBrand>
+                    </div>
+                  </NavbarHeader>
+                </div>
+              </Grid>
+            </nav>
+          </Navbar>
+        </Uncontrolled(Navbar)>
+        <Grid
+          bsClass="container"
+          componentClass="div"
+          fluid={false}
+        >
+          <div
+            className="container"
+          >
+            Hello, world!
+          </div>
+        </Grid>
+      </div>
+    </App>
+  </Router>
+</StaticRouter>
+`;

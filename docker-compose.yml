@@ -19,7 +19,7 @@ services:
   node-dev:
     image: node:8
     volumes:
-    - ./:/usr/src/app
+    - ./frontend:/usr/src/app
     working_dir: /usr/src/app
     entrypoint: npm run wp-dev-server
     expose:
@@ -33,19 +33,19 @@ services:
       default:
         aliases:
         - ${WEBPACK_DEV_SERVER_HOST}
-    node:
-      image: node:8
-      volumes:
-      - ./:/usr/src/app
-      working_dir: /usr/src/app
-      entrypoint: npm run nodemon
-      expose:
-      - 80
-      environment:
-      - VIRTUAL_HOST=${FRONTEND_HOST}
-      - PORT=80
-      - BACKEND_HOST=${BACKEND_HOST}
-      - ASSETS_HOST=${WEBPACK_DEV_SERVER_HOST}
+  node:
+    image: node:8
+    volumes:
+    - ./frontend:/usr/src/app
+    working_dir: /usr/src/app
+    entrypoint: npm run nodemon
+    expose:
+    - 80
+    environment:
+    - VIRTUAL_HOST=${FRONTEND_HOST}
+    - PORT=80
+    - BACKEND_HOST=${BACKEND_HOST}
+    - ASSETS_HOST=${WEBPACK_DEV_SERVER_HOST}
 networks:
   default:
     external:

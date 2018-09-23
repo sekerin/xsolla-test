@@ -68,10 +68,23 @@ class SimpleFileSystemRepository implements FileRepositoryInterface
      * Download file by id
      *
      * @param string $id
+     *
+     * @throws FileNotFound
      */
     public function download(string $id): void
     {
-        // TODO: Implement download() method.
+        $path = "{$this->dataDir}/{$id}";
+
+        if (!$this->fileExists($path)) {
+            throw new FileNotFound(sprintf('File %s not found', $id));
+        }
+
+        header('Content-Type: ' . mime_content_type($path));
+        header('Content-Disposition: attachment; filename="' . $id . '"');
+        header('Content-Length: ' . filesize($path));
+
+        readfile($path);
+        exit;
     }
 
     /**

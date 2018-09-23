@@ -25,8 +25,8 @@ class FileControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request('GET', '/files/filename');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(),
-            'GET /filename must be accessible');
+        $this->assertEquals(500, $client->getResponse()->getStatusCode(),
+            'GET /filename must fail');
     }
 
     public function testSave()

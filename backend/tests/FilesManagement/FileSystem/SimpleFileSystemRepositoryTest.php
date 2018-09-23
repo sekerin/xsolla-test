@@ -83,4 +83,14 @@ class SimpleFileSystemRepositoryTest extends TestCase
 
         $this->repository->delete('file1');
     }
+
+    /**
+     * @throws FileNotFound
+     */
+    public function testDownload()
+    {
+        $this->expectException(FileNotFound::class);
+
+        $this->repository->download('fileNotFound');
+    }
 }

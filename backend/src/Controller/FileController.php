@@ -52,11 +52,13 @@ class FileController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function download(Request $request): Response
+    public function download(Request $request, FileRepositoryInterface $repository): Response
     {
         $fileName = $request->get('file_name') ?? '';
 
-        return new Response('download' . $fileName);
+        $repository->download($fileName);
+
+        throw new \RuntimeException();
     }
 
     /**

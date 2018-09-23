@@ -5,15 +5,20 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\FilesManagement\FileRepositoryInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
+
+use Symfony\Component\Routing\Route as Routing;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+use App\FilesManagement\FileRepositoryInterface;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("/")
+ * @Route("/files")
  */
 class FileController extends AbstractController
 {
@@ -87,5 +92,30 @@ class FileController extends AbstractController
         $fileName = $request->get('file_name') ?? '';
 
         return new Response('delete' . $fileName);
+    }
+
+    /**
+     * Response for options request
+     *
+     * @Route("/", name="files_options", methods="OPTIONS")
+     * @Route("/{filename}", name="files_options_file", methods="OPTIONS", requirements={"file_name": "[A-Za-z0-9 _ \.\-]+"})
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function options(Request $request): Response
+    {
+        $response = new Response();
+
+        $response->setStatusCode(204);
+
+        if ($request->get('filename')) {
+            $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+        } else {
+            $response->headers->set('Access-Control-Allow-Methods', 'GET, POST');
+        }
+
+
+        return $response;
     }
 }

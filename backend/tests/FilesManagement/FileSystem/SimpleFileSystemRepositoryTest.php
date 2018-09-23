@@ -2,7 +2,6 @@
 
 namespace App\Tests\FilesManagement\FileSystem;
 
-use App\Exception\FileException\FileNotFound;
 use PHPUnit\Framework\TestCase;
 
 use Prophecy\Prophecy\ObjectProphecy;
@@ -12,8 +11,13 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use App\FilesManagement\FileEntityInterface;
 use App\FilesManagement\FileSystem\SimpleFileSystemRepository;
 
+use App\Exception\FileException\FileNotFound;
+use App\Exception\FileException\FileAlreadyExists;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
+
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class SimpleFileSystemRepositoryTest extends TestCase
 {
@@ -72,7 +76,7 @@ class SimpleFileSystemRepositoryTest extends TestCase
     }
 
     /**
-     * @throws \App\Exception\FileException\FileNotFound
+     * @throws FileNotFound
      */
     public function testDelete()
     {
@@ -92,5 +96,51 @@ class SimpleFileSystemRepositoryTest extends TestCase
         $this->expectException(FileNotFound::class);
 
         $this->repository->download('fileNotFound');
+    }
+
+    /**
+     * @throws FileAlreadyExists
+     */
+    public function testCreate()
+    {
+        /** @var FileEntityInterface|ObjectProphecy $fileEntity */
+        $fileEntity = $this->prophesize(FileEntityInterface::class);
+
+        $file = new UploadedFile(
+            $this->file_system->url() . '/' . $this->dataDirectory . '/' . 'file1',
+            'file1',
+            'image/jpeg',
+            null
+        );
+
+        $fileEntity->getFile()->willReturn($file);
+        $fileEntity->getId()->willReturn('file1');
+        $fileEntity->getPath()->willReturn($this->file_system->url() . '/' . $this->dataDirectory . '/' . 'file1');
+
+        $this->expectException(FileAlreadyExists::class);
+        $this->repository->create($fileEntity->reveal());
+    }
+
+    /**
+     * @throws FileAlreadyExists|FileNotFound
+     */
+    public function testReplaceFileAlreadyExists()
+    {
+        /** @var FileEntityInterface|ObjectProphecy $fileEntity */
+        $fileEntity = $this->prophesize(FileEntityInterface::class);
+
+        $file = new UploadedFile(
+            $this->file_system->url() . '/' . $this->dataDirectory . '/' . 'file1',
+            'file2',
+            'image/jpeg',
+            null
+        );
+
+        $fileEntity->getFile()->willReturn($file);
+        $fileEntity->getId()->willReturn('file1');
+        $fileEntity->getPath()->willReturn($this->file_system->url() . '/' . $this->dataDirectory . '/' . 'file1');
+
+        $this->expectException(FileAlreadyExists::class);
+        $this->repository->replace('file3', $fileEntity->reveal());
     }
 }

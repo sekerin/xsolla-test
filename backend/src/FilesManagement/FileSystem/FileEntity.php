@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpUnusedAliasInspection */
 
 declare(strict_types=1);
 
@@ -8,10 +9,14 @@ use SplFileInfo;
 
 use App\FilesManagement\FileEntityInterface;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class FileEntity implements FileEntityInterface, \JsonSerializable
 {
     /**
      * @var SplFileInfo
+     *
+     * @Assert\NotNull(message="Please, insert the file")
      */
     protected $file;
 

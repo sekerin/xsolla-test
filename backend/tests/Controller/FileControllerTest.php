@@ -25,8 +25,8 @@ class FileControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request('GET', '/files/filename');
 
-        $this->assertEquals(500, $client->getResponse()->getStatusCode(),
-            'GET /filename must fail');
+        $this->assertEquals(404, $client->getResponse()->getStatusCode(),
+            'GET /filename did not exist');
     }
 
     public function testSave()
@@ -34,13 +34,13 @@ class FileControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request('POST', '/files/');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(),
-            'POST / must be accessible');
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(),
+            'POST / must fail');
 
         $client->request('POST', '/files/filename');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(),
-            'POST /filename must be accessible');
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(),
+            'POST /filename must fail');
     }
 
     public function testDelete()
@@ -48,7 +48,7 @@ class FileControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request('DELETE', '/files/filename');
 
-        $this->assertEquals(500, $client->getResponse()->getStatusCode(),
-            'DELETE /filename must fail');
+        $this->assertEquals(404, $client->getResponse()->getStatusCode(),
+            'DELETE /filename did not exist');
     }
 }

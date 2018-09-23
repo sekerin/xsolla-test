@@ -5,15 +5,19 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Symfony\Component\Routing\Annotation\Route;
+use App\FilesManagement\FileEntityInterface;
+use App\FilesManagement\FileRepositoryInterface;
 
 use Symfony\Component\Routing\Route as Routing;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-use App\FilesManagement\FileRepositoryInterface;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -70,10 +74,39 @@ class FileController extends AbstractController
      *     methods="POST",
      *     requirements={"file_name": "[A-Za-z0-9 _ \.\-]+"}
      *     )
+     * @param Request $request
+     * @param ValidatorInterface $validator
+     * @param FileEntityInterface $fileEntity
+     * @param FileRepositoryInterface $repository
+     *
+     * @return Response
      */
-    public function save(): Response
-    {
-        return new Response('save');
+    public function save(
+        Request $request,
+        ValidatorInterface $validator,
+        FileEntityInterface $fileEntity,
+        FileRepositoryInterface $repository
+    ): Response {
+        if ($request->files->get('file') instanceof File) {
+            $fileEntity->setFile($request->files->get('file'));
+        }
+
+        $fileName = $request->get('file_name') ?? null;
+
+        $errors = $validator->validate($fileEntity);
+
+        if ($errors->count() > 0) {
+            throw new BadRequestHttpException($errors->get(0)->getMessage(), null, 400);
+        }
+
+        /** @var string $fileName */
+        $file = is_null($fileName)
+            ? $repository->create($fileEntity)
+            : $repository->replace($fileName, $fileEntity);
+
+        return $this->json([
+            'item' => $file->getMetadata()
+        ]);
     }
 
     /**

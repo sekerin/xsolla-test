@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Exception\FileException;
 
-class FileNotFound extends FileException
+class FileAlreadyExists extends FileException
 {
-    protected $code = 404;
+    protected $code = 409;
 }

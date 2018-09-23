@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\FilesManagement\FileSystem;
 
+use App\Exception\FileException\FileAlreadyExists;
 use App\Exception\FileException\FileNotFound;
 use IteratorIterator;
 
@@ -13,6 +14,8 @@ use App\FilesManagement\FileRepositoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class SimpleFileSystemRepository implements FileRepositoryInterface
 {
@@ -92,10 +95,22 @@ class SimpleFileSystemRepository implements FileRepositoryInterface
      *
      * @param FileEntityInterface $fileEntity
      * @return FileEntityInterface
+     *
+     * @throws FileAlreadyExists
      */
     public function create(FileEntityInterface $fileEntity): FileEntityInterface
     {
-        // TODO: Implement create() method.
+        if ($this->checkFileDestinationExists($fileEntity)) {
+            throw new FileAlreadyExists(sprintf('File already exist'));
+        }
+
+        $file = $fileEntity->getFile();
+
+        if ($file instanceof UploadedFile) {
+            $fileEntity->setFile($this->saveUpload($file, $this->dataDir, $file->getClientOriginalName()));
+        }
+
+        return $fileEntity;
     }
 
     /**
@@ -104,10 +119,22 @@ class SimpleFileSystemRepository implements FileRepositoryInterface
      * @param string $name
      * @param FileEntityInterface $fileEntity
      * @return FileEntityInterface
+     *
+     * @throws FileAlreadyExists
      */
     public function replace(string $name, FileEntityInterface $fileEntity): FileEntityInterface
     {
-        // TODO: Implement replace() method.
+        if (!$this->fileExists("{$this->dataDir}/{$name}")) {
+            throw new FileAlreadyExists(sprintf('File already exist'));
+        }
+
+        $file = $fileEntity->getFile();
+
+        if ($file instanceof UploadedFile) {
+            $fileEntity->setFile($this->saveUpload($file, $this->dataDir, $name));
+        }
+
+        return $fileEntity;
     }
 
     /**
@@ -147,6 +174,26 @@ class SimpleFileSystemRepository implements FileRepositoryInterface
     }
 
     /**
+     * Prepare destination dir params (for UploadFiles) and call fileExists
+     *
+     * @param FileEntityInterface $fileEntity
+     * @return bool
+     */
+    protected function checkFileDestinationExists(FileEntityInterface $fileEntity): bool
+    {
+        $file = $fileEntity->getFile();
+        $path = $file->getPath();
+        $fileName = $file->getFilename();
+
+        if ($file instanceof UploadedFile) {
+            $path = $this->dataDir;
+            $fileName = $file->getClientOriginalName();
+        }
+
+        return $this->fileExists("{$path}/{$fileName}");
+    }
+
+    /**
      * Check is file exists
      *
      * @param string $path
@@ -155,6 +202,19 @@ class SimpleFileSystemRepository implements FileRepositoryInterface
     protected function fileExists(string $path): bool
     {
         return file_exists($path);
+    }
+
+    /**
+     * Upload file
+     *
+     * @param UploadedFile $uploadedFile
+     * @param $path
+     * @param $name
+     * @return File
+     */
+    protected function saveUpload(UploadedFile $uploadedFile, $path, $name): File
+    {
+        return $uploadedFile->move($path, $name);
     }
 
     /**

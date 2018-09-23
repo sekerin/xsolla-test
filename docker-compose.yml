@@ -16,6 +16,36 @@ services:
     - ./backend:/var/www/html
     environment:
     - XDEBUD_REMOTE_HOST=${XDEBUD_REMOTE_HOST}
+  node-dev:
+    image: node:8
+    volumes:
+    - ./:/usr/src/app
+    working_dir: /usr/src/app
+    entrypoint: npm run wp-dev-server
+    expose:
+    - 80
+    environment:
+    - VIRTUAL_HOST=${WEBPACK_DEV_SERVER_HOST}
+    - ASSETS_HOST=${WEBPACK_DEV_SERVER_HOST}
+    - FRONTEND_HOST=${FRONTEND_HOST}
+    - BACKEND_HOST=${BACKEND_HOST}
+    networks:
+      default:
+        aliases:
+        - ${WEBPACK_DEV_SERVER_HOST}
+    node:
+      image: node:8
+      volumes:
+      - ./:/usr/src/app
+      working_dir: /usr/src/app
+      entrypoint: npm run nodemon
+      expose:
+      - 80
+      environment:
+      - VIRTUAL_HOST=${FRONTEND_HOST}
+      - PORT=80
+      - BACKEND_HOST=${BACKEND_HOST}
+      - ASSETS_HOST=${WEBPACK_DEV_SERVER_HOST}
 networks:
   default:
     external:

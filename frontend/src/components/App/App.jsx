@@ -7,6 +7,8 @@ import Navbar from 'react-bootstrap/lib/Navbar';
 
 import FilesList from '../FilesList';
 
+import './bootstrap.css';
+
 const propTypes = {
   children: PropTypes.node
 };

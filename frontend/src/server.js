@@ -34,6 +34,7 @@ function renderHTML(componentHTML, initialState) {
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>Xsolla Test</title>
+          <link rel="stylesheet" type="text/css" href="${assetUrl}/public/assets/styles.css">
           <script type="application/javascript">
             window.REDUX_INITIAL_STATE = ${JSON.stringify(initialState)};
           </script>

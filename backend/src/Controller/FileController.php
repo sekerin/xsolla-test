@@ -54,6 +54,7 @@ class FileController extends AbstractController
      *     )
      *
      * @param Request $request
+     * @param FileRepositoryInterface $repository
      * @return Response
      */
     public function download(Request $request, FileRepositoryInterface $repository): Response
@@ -103,6 +104,31 @@ class FileController extends AbstractController
         $file = is_null($fileName)
             ? $repository->create($fileEntity)
             : $repository->replace($fileName, $fileEntity);
+
+        return $this->json([
+            'item' => $file->getMetadata()
+        ]);
+    }
+
+    /**
+     * Get metadata specific file
+     *
+     * @Route(
+     *     "/metadata/{file_name}",
+     *     name="file_delete",
+     *     methods="GET",
+     *     requirements={"file_name": "[A-Za-z0-9 _ \.\-]+"}
+     *     )
+     *
+     * @param Request $request
+     * @param FileRepositoryInterface $repository
+     * @return Response
+     */
+    public function metadata(Request $request, FileRepositoryInterface $repository)
+    {
+        $fileName = $request->get('file_name');
+
+        $file = $repository->getFileByName($fileName);
 
         return $this->json([
             'item' => $file->getMetadata()

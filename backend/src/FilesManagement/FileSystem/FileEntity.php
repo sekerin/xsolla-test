@@ -62,7 +62,29 @@ class FileEntity implements FileEntityInterface, \JsonSerializable
         return [
             'name' => $this->getId(),
             'path' => $this->getPath(),
+            'size' => $this->getSize(),
+            'mime' => $this->getMimeType()
         ];
+    }
+
+    /**
+     * File size
+     *
+     * @return int
+     */
+    public function getSize()
+    {
+        return $this->file->getSize();
+    }
+
+    /**
+     * File mime type
+     *
+     * @return string
+     */
+    public function getMimeType(): string
+    {
+        return mime_content_type($this->file->getRealPath());
     }
 
     /**

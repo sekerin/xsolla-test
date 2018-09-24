@@ -19,7 +19,7 @@ class ExceptionToJsonListener
         $code = $exception->getCode() ?: 500;
 
         $responseData = [
-            'errors' => [($code === 500) ? 'Service Error' : $exception->getMessage()],
+            'errors' => [$exception->getMessage()],
         ];
 
         $event->setResponse(new JsonResponse($responseData, $code));

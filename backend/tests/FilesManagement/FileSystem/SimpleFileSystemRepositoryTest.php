@@ -122,9 +122,9 @@ class SimpleFileSystemRepositoryTest extends TestCase
     }
 
     /**
-     * @throws FileAlreadyExists|FileNotFound
+     * @throws FileNotFound
      */
-    public function testReplaceFileAlreadyExists()
+    public function testReplaceFileNotFound()
     {
         /** @var FileEntityInterface|ObjectProphecy $fileEntity */
         $fileEntity = $this->prophesize(FileEntityInterface::class);
@@ -140,7 +140,7 @@ class SimpleFileSystemRepositoryTest extends TestCase
         $fileEntity->getId()->willReturn('file1');
         $fileEntity->getPath()->willReturn($this->file_system->url() . '/' . $this->dataDirectory . '/' . 'file1');
 
-        $this->expectException(FileAlreadyExists::class);
+        $this->expectException(FileNotFound::class);
         $this->repository->replace('file3', $fileEntity->reveal());
     }
 

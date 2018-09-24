@@ -134,12 +134,12 @@ class SimpleFileSystemRepository implements FileRepositoryInterface
      * @param FileEntityInterface $fileEntity
      * @return FileEntityInterface
      *
-     * @throws FileAlreadyExists
+     * @throws FileNotFound
      */
     public function replace(string $name, FileEntityInterface $fileEntity): FileEntityInterface
     {
         if (!$this->fileExists("{$this->dataDir}/{$name}")) {
-            throw new FileAlreadyExists(sprintf('File already exist'));
+            throw new FileNotFound(sprintf('File not found'));
         }
 
         $file = $fileEntity->getFile();

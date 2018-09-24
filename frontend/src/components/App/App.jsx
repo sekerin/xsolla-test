@@ -22,7 +22,6 @@ class App extends Component {
             <Navbar.Brand>
               <Link to='/'>File Manager</Link>
             </Navbar.Brand>
-            <Navbar.Toggle/>
           </Navbar.Header>
         </Navbar>
         <Grid>

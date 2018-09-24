@@ -21,7 +21,10 @@
     ],
     "setupFiles": [
       "<rootDir>/src/tests/setup.js"
-    ]
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less)$": "<rootDir>/src/tests/__mocks__/styleMock.js"
+    }
   },
   "dependencies": {
     "@babel/core": "^7.0.0",

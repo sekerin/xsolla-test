@@ -38,7 +38,8 @@ export function listRequest() {
     fetch(`//${BACKEND_URL}/`, {
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json; charset=utf-8'
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept-Encoding': 'gzip,deflate'
       },
       credentials: 'include'
     })
@@ -63,7 +64,8 @@ export function remove(id) {
     fetch(`//${BACKEND_URL}/${id}`, {
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept-Encoding': 'gzip,deflate'
       },
       credentials: 'include',
       method: 'DELETE'
@@ -96,7 +98,8 @@ export function create(file) {
     formData.append('file', file);
     fetch(`//${BACKEND_URL}/`, {
       headers: {
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Accept-Encoding': 'gzip,deflate'
       },
       credentials: 'include',
       method: 'POST',
@@ -127,7 +130,8 @@ export function update(name, file) {
     formData.append('file', file);
     fetch(`//${BACKEND_URL}/${name}`, {
       headers: {
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Accept-Encoding': 'gzip,deflate'
       },
       credentials: 'include',
       method: 'POST',

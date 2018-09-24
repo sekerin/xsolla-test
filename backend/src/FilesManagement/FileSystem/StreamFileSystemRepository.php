@@ -37,8 +37,6 @@ class StreamFileSystemRepository extends SimpleFileSystemRepository
 
         $file = fopen($path, 'rb');
 
-        stream_filter_append($file, 'zlib.inflate');
-
         if (fpassthru($file) === false) {
             throw new FileException();
         }
@@ -102,7 +100,6 @@ class StreamFileSystemRepository extends SimpleFileSystemRepository
 
     /**
      * @inheritdoc
-     * Use zlib.deflate stream filter
      *
      * @param UploadedFile $uploadedFile
      * @param $path
@@ -112,15 +109,17 @@ class StreamFileSystemRepository extends SimpleFileSystemRepository
      */
     protected function saveUpload(UploadedFile $uploadedFile, $path, $name): File
     {
-        $inStream = fopen($path, 'rb');
-        $outStream = fopen("{$this->dataDir}/{$name}", 'wb');
-        stream_filter_append($outStream, 'zlib.deflate', STREAM_FILTER_WRITE);
+        $absPath = "{$path}/{$name}";
+        $inStream = fopen($uploadedFile->getRealPath(), 'rb');
+        $outStream = fopen($absPath, 'wb');
 
         if ($inStream === false || $outStream === false || stream_copy_to_stream($inStream, $outStream) === false) {
             throw new FileException();
         }
 
-        return new File("{$this->dataDir}/{$uploadedFile->getClientOriginalName()}");
+        $this->unlink($uploadedFile->getRealPath());
+
+        return new File($absPath);
     }
 
     /**

@@ -8,6 +8,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 use App\EventListener\CorsListener;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
@@ -38,7 +39,12 @@ class CorsEventListenerTest extends TestCase
         $responseHeaderBag->set('Access-Control-Allow-Origin', 'http://sf.local')->shouldBeCalled();
         $responseHeaderBag->set('Access-Control-Allow-Credentials', 'true')->shouldBeCalled();
 
-        $cors = new CorsListener();
+        /** @var ContainerInterface|ObjectProphecy $container */
+        $container = $this->prophesize(ContainerInterface::class);
+
+        $container->getParameter('cors_accept')->willReturn('http://sf.local');
+
+        $cors = new CorsListener($container->reveal());
         $cors->onKernelResponse($event->reveal());
     }
 }

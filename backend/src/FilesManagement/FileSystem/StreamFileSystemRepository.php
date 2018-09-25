@@ -110,14 +110,14 @@ class StreamFileSystemRepository extends SimpleFileSystemRepository
     protected function saveUpload(UploadedFile $uploadedFile, $path, $name): File
     {
         $absPath = "{$path}/{$name}";
-        $inStream = fopen($uploadedFile->getRealPath(), 'rb');
+        $inStream = fopen($uploadedFile->getPathname(), 'rb');
         $outStream = fopen($absPath, 'wb');
 
         if ($inStream === false || $outStream === false || stream_copy_to_stream($inStream, $outStream) === false) {
             throw new FileException();
         }
 
-        $this->unlink($uploadedFile->getRealPath());
+        $this->unlink($uploadedFile->getPathname());
 
         return new File($absPath);
     }
